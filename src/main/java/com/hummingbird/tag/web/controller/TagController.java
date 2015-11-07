@@ -61,7 +61,7 @@ public class TagController {
 	  */
 	@RequestMapping(value = "insert", method =RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public String insertTag(HttpServletRequest request)throws Exception{
+    public String insertTag(HttpServletRequest request){
 		try{
 			String jsonStr = RequestUtil.getRequestPostData(request);
 	    	if(jsonStr.length() == 0){
@@ -170,7 +170,7 @@ public class TagController {
 	 */
 	@RequestMapping(value = "tagDispatch", method =RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
-    public String tagDispatch(HttpServletRequest request)throws Exception{
+    public String tagDispatch(HttpServletRequest request){
 		try{
 			String jsonStr = RequestUtil.getRequestPostData(request);
 	    	if(jsonStr.length() == 0){
@@ -282,7 +282,7 @@ public class TagController {
 	 */
 	@RequestMapping(value = "searchBusinessId", method =RequestMethod.POST, produces = {"application/text;charset=UTF-8"})
     @ResponseBody
-    public String searchBusinessId(HttpServletRequest request)throws Exception{
+    public String searchBusinessId(HttpServletRequest request){
 		try{
 			String jsonStr = RequestUtil.getRequestPostData(request);
 	    	if(jsonStr.length() == 0){
@@ -327,6 +327,62 @@ public class TagController {
 		}catch(Exception e){
 			logger.error("系统错误，查询失败", e);
 			return "{\"errcode\":10000,\"errmsg\":\"系统错误，查询失败\"}";
+		}
+	}
+	
+	
+	
+	/**
+	 * 取消标签
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "cancelTag", method =RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+	public String cancelTag(HttpServletRequest request){
+		try{
+			String jsonStr = RequestUtil.getRequestPostData(request);
+	    	if(jsonStr.length() == 0){
+	    		logger.debug("接收的数据为空");
+	    		return "{\"errcode\":10000,\"errmsg\":\"接收的数据为空\"}";
+	    	}
+	    	
+	    	JSONObject jsonObject = gson.fromJson(jsonStr, new TypeToken<JSONObject>() {}.getType());
+	    	Integer tagTypeId = jsonObject.getInt("tagTypeId");
+	    	String tagName = jsonObject.getString("tagName");
+	    	String tagCreateObject = jsonObject.getString("tagCreateObject");
+	    	Integer businessId = jsonObject.getInt("businessId");
+	    	
+	    	if(tagTypeId == null){
+	    		logger.debug("必要参数为空");
+	    		return "{\"errcode\":10000,\"errmsg\":\"必要参数为空\"}";
+	    	}
+	    	
+	    	if(StringUtils.isBlank(tagName)){
+	    		logger.debug("必要参数为空");
+	    		return "{\"errcode\":10000,\"errmsg\":\"必要参数为空\"}";
+	    	}
+	    	
+	    	if(StringUtils.isBlank(tagCreateObject)){
+	    		logger.debug("必要参数为空");
+	    		return "{\"errcode\":10000,\"errmsg\":\"必要参数为空\"}";
+	    	}
+	    	if(businessId == null){
+	    		logger.debug("必要参数为空");
+	    		return "{\"errcode\":10000,\"errmsg\":\"必要参数为空\"}";
+	    	}
+	    	
+	    	Tag tag = tagService.getTag(tagTypeId, tagName, tagCreateObject);
+	    	if(tag != null){
+	    		tag.setTabUseNum(tag.getTabUseNum() - 1);
+	    		tagmapService.delTagmap(businessId, tag);
+	    	}
+	    	logger.debug("移除标签成功");
+    		return "{\"errcode\":0000,\"errmsg\":\"移除标签成功\"}";
+		}catch(Exception e){
+			logger.error("系统错误，操作失败", e);
+			return "{\"errcode\":10000,\"errmsg\":\"系统错误，操作失败\"}";
 		}
 	}
 }

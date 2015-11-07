@@ -27,9 +27,13 @@ businessId|是|被打标签的信息ID
 
 内容事例：
 
-{"errcode":10000,"errmsg":"接收的数据为空"}  不成功事例
+不成功事例
 
-{"errcode":0000,"errmsg":"标签添加成功"}    成功事例
+{"errcode":10000,"errmsg":"接收的数据为空"}  
+
+成功事例
+
+{"errcode":0000,"errmsg":"标签添加成功"}    
 
 
 
@@ -57,9 +61,13 @@ dispatchUserNameTo|是|调配的接收者
 
 内容事例：
 
-{"errcode":10000,"errmsg":"接收的数据为空"}  不成功事例
+不成功事例
 
-{"errcode":0000,"errmsg":"调配完成"}  成功事例
+{"errcode":10000,"errmsg":"接收的数据为空"}  
+
+成功事例
+
+{"errcode":0000,"errmsg":"调配完成"}  
 
 
 
@@ -89,3 +97,39 @@ tagName|是|标签名称（支持模糊查询）
 格式：逗号隔开的数字
 
 内容事例：1,2,3,4
+
+
+
+
+
+##4、移除标签
+
+http://ip:port/tag/cancelTag
+
+http请求方式: post
+
+POST数据格式：JSON
+
+{"tagName":"重要","tagCreateObject":"张三","tagTypeId":1,"businessId":1}
+
+参数|是否必须|说明
+----|----|-----
+tagName|是|标签名称
+tagCreateObject|是|标签的创建者
+tagTypeId|是|标签的类型ID
+businessId|是|被打标签的信息ID
+
+返回说明
+
+格式：json
+
+内容事例：
+
+不成功事例
+
+{"errcode":10000,"errmsg":"必要参数为空"}  
+
+成功事例 
+
+{"errcode":0000,"errmsg":"移除标签成功"}  
+

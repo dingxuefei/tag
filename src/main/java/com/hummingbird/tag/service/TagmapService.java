@@ -3,6 +3,7 @@ package com.hummingbird.tag.service;
 import java.util.List;
 import java.util.Map;
 
+import com.hummingbird.tag.model.Tag;
 import com.hummingbird.tag.model.Tagmap;
 
 /**
@@ -55,6 +56,15 @@ public interface TagmapService {
 	 * @return
 	 */
 	public int delTagmap(Integer tagId, Integer businessId);
+	
+	
+	/**
+	 * 移除标签
+	 * @param tagId
+	 * @param businessId
+	 * @param tag
+	 */
+	public void delTagmap(Integer businessId, Tag tag);
 	
 	
 }

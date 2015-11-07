@@ -6,7 +6,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hummingbird.tag.dao.TagDao;
 import com.hummingbird.tag.dao.TagmapDao;
+import com.hummingbird.tag.model.Tag;
 import com.hummingbird.tag.model.Tagmap;
 import com.hummingbird.tag.service.TagmapService;
 
@@ -15,6 +17,9 @@ public class TagmapServiceImpl implements TagmapService {
 
 	@Autowired
 	private TagmapDao tagmapDao;
+	
+	@Autowired
+	private TagDao tagDao;
 	
 	@Override
 	public Tagmap insertTagmap(Tagmap tagmap) {
@@ -39,6 +44,12 @@ public class TagmapServiceImpl implements TagmapService {
 	@Override
 	public int delTagmap(Integer tagId, Integer businessId) {
 		return tagmapDao.delTagmap(tagId, businessId);
+	}
+
+	@Override
+	public void delTagmap(Integer businessId, Tag tag) {
+		tagmapDao.delTagmap(tag.getTagId(), businessId);
+		tagDao.updateTag(tag);
 	}
 
 }
