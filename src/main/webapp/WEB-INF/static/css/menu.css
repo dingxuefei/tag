@@ -1,0 +1,48 @@
+
+h5 {
+	margin: 0;
+	background-color: rgb(228,10,85);
+	background-image: linear-gradient(bottom, rgb(228,10,85) 14%, rgb(255,36,111) 57%);
+	background-image: -o-linear-gradient(bottom, rgb(228,10,85) 14%, rgb(255,36,111) 57%);
+	background-image: -moz-linear-gradient(bottom, rgb(228,10,85) 14%, rgb(255,36,111) 57%);
+	background-image: -webkit-linear-gradient(bottom, rgb(228,10,85) 14%, rgb(255,36,111) 57%);
+	background-image: -ms-linear-gradient(bottom, rgb(228,10,85) 14%, rgb(255,36,111) 57%);
+}
+h5 a {
+	background: url("../images/sprite.png") 15px 11px no-repeat;
+	display: block;
+	padding: 10px;
+	padding-left: 32px;
+	margin: 0;
+	color: #fff;
+	text-decoration: none;
+	font-weight: normal;
+	border-bottom: 1px solid rgba(128, 10, 85, 0.5);
+	text-shadow: 1px 1px 1px rgb(128,10,85);
+}
+h5:hover {
+	background: rgb(228,10,85);
+}
+h5.open {
+	background: rgb(255,70,120);
+}
+h5.open a {
+	background-position: 13px -25px;
+ 
+}
+h5 + div {
+	padding: 10px;
+}
+
+h5+div {
+	display: none;
+}
+
+#menu h5:first-child {
+	border-radius: 6px 6px 0 0;
+}
+
+a:hover, a:focus {
+    color: #ffffff;
+    text-decoration: none;
+}

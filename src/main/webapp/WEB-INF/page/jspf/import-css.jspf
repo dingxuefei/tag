@@ -1,0 +1,17 @@
+
+<link type="text/css" href="${ctx}/static/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link type="text/css" href="${ctx}/static/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+<link type="text/css" href="${ctx}/static/bootstrap/css/font-awesome.min.css" rel="stylesheet"/>
+
+<link type="text/css" href="${ctx}/static/jquery-layout/css/layout-default-1.3.0.css" rel="stylesheet">
+
+<link type="text/css" href="${ctx}/static/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+
+<link type="text/css" href="${ctx}/static/jquery-treetable/css/jquery.treetable.css" rel="stylesheet" >
+<link type="text/css" href="${ctx}/static/jquery-treetable/css/jquery.treetable.theme.default.css" rel="stylesheet" >
+
+<link type="text/css" href="${ctx}/static/zTree/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
+
+<link type="text/css" href="${ctx}/static/select2/select2.css" rel="stylesheet">
+
+<link type="text/css" href="${ctx}/static/css/main.css" rel="stylesheet">

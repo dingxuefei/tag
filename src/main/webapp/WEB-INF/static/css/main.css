@@ -1,0 +1,96 @@
+body {
+	font-size: 12px;
+	font-family: arial;
+}
+
+.table {
+	font-size: 12px;
+	font-family: arial;
+	margin-bottom: 0px;
+}
+
+select,
+input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"],
+.uneditable-input
+{
+	font-size: 12px;
+    height: 28px;
+    padding: 4px;
+}
+
+label{
+	font-size: 12px;
+}
+
+
+.modal-footer {
+	padding: 10px 15px 10px;
+}
+
+
+.nav-pills > .active > a, .nav-pills > .active > a:hover, .nav-pills > .active > a:focus {
+    background: #0099ff;
+}
+
+a, .ui-widget-content a, .btn-link {
+    color: #0099ff;
+}
+
+.btn {
+    font-size: 12px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.label-left {
+	margin-left: 15px;
+}
+
+
+.prettyprint {
+    padding: 8px;
+    background-color: #f7f7f9;
+    border: 1px solid #e1e1e8;
+    border-radius:4px;
+}
+
+.datetimepicker table {
+	font-size: 13px;
+}
+
+.tool.ui-toolbar {
+    width: auto;
+    margin: 0 auto 1px 0;
+    padding: 3px;
+    background-image: -moz-linear-gradient(center top , #ffffff, #ffffff);
+}
+
+.modal-backdrop, .modal-backdrop.fade.in{
+	opacity:0.5
+}
+
+#menu .menu-icon{
+    padding-right: 5px;
+    color: #f89406;
+}
+
+#menu .divcss{
+	/* border: 1px solid #e1e1e8; */
+	background: #e1e1e8;
+}
+
