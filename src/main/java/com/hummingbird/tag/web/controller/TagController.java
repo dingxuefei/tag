@@ -23,10 +23,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.hummingbird.tag.model.Tag;
-import com.hummingbird.tag.model.TagType;
+import com.hummingbird.tag.model.TagGroup;
+import com.hummingbird.tag.model.TagObject;
 import com.hummingbird.tag.model.Tagmap;
+import com.hummingbird.tag.service.TagGroupService;
+import com.hummingbird.tag.service.TagObjectService;
 import com.hummingbird.tag.service.TagService;
-import com.hummingbird.tag.service.TagTypeService;
 import com.hummingbird.tag.service.TagmapService;
 import com.hummingbird.tag.util.RequestUtil;
 
@@ -38,10 +40,13 @@ public class TagController {
 	private TagService tagService;
 	
 	@Autowired
-	private TagTypeService tagTypeService;
+	private TagGroupService tagGroupService;
 	
 	@Autowired
 	private TagmapService tagmapService;
+	
+	@Autowired
+	private TagObjectService tagObjectService;
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
@@ -63,6 +68,8 @@ public class TagController {
     @ResponseBody
     public String insertTag(HttpServletRequest request){
 		try{
+			Integer tagObjectId = null;
+			Integer tagGroupId = null;
 			String jsonStr = RequestUtil.getRequestPostData(request);
 	    	if(jsonStr.length() == 0){
 	    		logger.debug("接收的数据为空");
@@ -77,8 +84,9 @@ public class TagController {
 	    	
 	    	String tagName = tag.getTagName();
 	    	String tagCreateObject = tag.getTagCreateObject();
+	    	String tagObjectCode = tag.getTagObjectCode();
+	    	String tagGroupName = tag.getTagGroupName();
 	    	Integer businessId = tag.getBusinessId();
-	    	Integer tagTypeId = tag.getTagTypeId();
 	    	
 	    	if(StringUtils.isBlank(tagName)){
 	    		logger.debug("标签名称为空");
@@ -88,32 +96,45 @@ public class TagController {
 				logger.debug("标签的创建者为空");
 	    		return "{\"errcode\":10000,\"errmsg\":\"标签的创建者为空\"}";	
 	    	}
-			if(businessId == null){
-				logger.debug("需要被打标签的对象ID为空");
-	    		return "{\"errcode\":10000,\"errmsg\":\"需要被打标签的对象ID为空\"}";	
-			}
-			if(tagTypeId == null){
-				logger.debug("标签的类型为空");
-	    		return "{\"errcode\":10000,\"errmsg\":\"标签的类型为空\"}";
+			if(StringUtils.isBlank(tagObjectCode)){
+				logger.debug("标签的所属业务编码为空");
+	    		return "{\"errcode\":10000,\"errmsg\":\"标签的所属业务编码为空\"}";	
 			}else{
-				TagType tagType = tagTypeService.getTagTypeById(tagTypeId);
-				if(tagType == null){
-					logger.debug("标签的类型不存在");
-		    		return "{\"errcode\":10000,\"errmsg\":\"标签的类型不存在\"}";
+				TagObject tagObject = tagObjectService.getTagObjectByCode(tagObjectCode);
+				if(tagObject == null){
+					logger.debug("操作对象的编码为空");
+		    		return "{\"errcode\":10000,\"errmsg\":\"操作对象的编码为空\"}";	
+				}else{
+					tagObjectId = tagObject.getTagObjectId();
 				}
 			}
 			
-			Tag tag_ = tagService.getTag(tagTypeId, tagName, tagCreateObject);
+			if(StringUtils.isBlank(tagGroupName)){
+				logger.debug("标签组名称为空");
+	    		return "{\"errcode\":10000,\"errmsg\":\"标签组名称为空\"}";
+			}else{
+				TagGroup tagGroup = tagGroupService.getTagGroupByName(tagGroupName);
+				if(tagGroup == null){
+					logger.debug("标签组不存在");
+		    		return "{\"errcode\":10000,\"errmsg\":\"tagGroup\"}";
+				}else{
+					tagGroupId = tagGroup.getTagGroupId();
+				}
+			}
+			
+			Tag tag_ = tagService.getTag(tagGroupId, tagName, tagCreateObject, tagObjectId);
 			
 			if(tag_ != null){
-				Tagmap tagmap = tagmapService.getTagmap(tag_.getTagId(), businessId);
+				Tagmap tagmap = tagmapService.getTagmap(tag_.getTagId(), tagGroupId, tagObjectId, businessId);
 				if(tagmap != null){
 					logger.debug("此信息已经存在该标签");
 		    		return "{\"errcode\":10000,\"errmsg\":\"此信息已经存在该标签\"}";
 				}else{
 					tagmap = new Tagmap();
 					tagmap.setTagId(tag_.getTagId());
-					tagmap.setBusinessId(tag.getBusinessId());
+					tagmap.setBusinessId(businessId);
+					tagmap.setTagGroupId(tagGroupId);
+					tagmap.setTagObjectId(tagObjectId);
 					tagmap.setTagmapCreateTime(new Date());
 					tagmap.setTagmapUpdateTime(new Date());
 					Tagmap tagmap_ = tagmapService.insertTagmap(tagmap);
@@ -138,7 +159,9 @@ public class TagController {
 				}else{
 					Tagmap tagmap = new Tagmap();
 					tagmap.setTagId(tag_.getTagId());
-					tagmap.setBusinessId(tag.getBusinessId());
+					tagmap.setBusinessId(businessId);
+					tagmap.setTagGroupId(tagGroupId);
+					tagmap.setTagObjectId(tagObjectId);
 					tagmap.setTagmapCreateTime(new Date());
 					tagmap.setTagmapUpdateTime(new Date());
 					Tagmap tagmap_ = tagmapService.insertTagmap(tagmap);
@@ -172,6 +195,8 @@ public class TagController {
     @ResponseBody
     public String tagDispatch(HttpServletRequest request){
 		try{
+			Integer tagObjectId = null;
+			Integer tagGroupId = null;
 			String jsonStr = RequestUtil.getRequestPostData(request);
 	    	if(jsonStr.length() == 0){
 	    		logger.debug("接收的数据为空");
@@ -179,19 +204,45 @@ public class TagController {
 	    	}
 	    	
 	    	JSONObject jsonObject = gson.fromJson(jsonStr, new TypeToken<JSONObject>() {}.getType());
-	    	Integer tagTypeId = jsonObject.getInt("tagTypeId");
+	    	
+	    	//组名称
+	    	String tagGroupName = jsonObject.getString("tagGroupName");
+	    	
+	    	//标签的所属业务编码
+	    	String tagObjectCode = jsonObject.getString("tagObjectCode");
 	    	
 	    	//需要被调配的人
 	    	String dispatchUserNameFrom = jsonObject.getString("dispatchUserNameFrom");
 	    	
 	    	//调配到的那一个人（接收者）
 	    	String dispatchUserNameTo = jsonObject.getString("dispatchUserNameTo");
+			
+			if(StringUtils.isBlank(tagGroupName)){
+				logger.debug("标签组名称为空");
+	    		return "{\"errcode\":10000,\"errmsg\":\"标签组名称为空\"}";
+			}else{
+				TagGroup tagGroup = tagGroupService.getTagGroupByName(tagGroupName);
+				if(tagGroup == null){
+					logger.debug("标签组不存在");
+		    		return "{\"errcode\":10000,\"errmsg\":\"tagGroup\"}";
+				}else{
+					tagGroupId = tagGroup.getTagGroupId();
+				}
+			}
 	    	
-	    	if(tagTypeId == null){
-	    		logger.debug("必要参数为空");
-	    		return "{\"errcode\":10000,\"errmsg\":\"必要参数为空\"}";
-	    	}
-	    	
+			if(StringUtils.isBlank(tagObjectCode)){
+				logger.debug("标签的所属业务编码为空");
+	    		return "{\"errcode\":10000,\"errmsg\":\"标签的所属业务编码为空\"}";	
+			}else{
+				TagObject tagObject = tagObjectService.getTagObjectByCode(tagObjectCode);
+				if(tagObject == null){
+					logger.debug("标签的所属业务对象为空");
+		    		return "{\"errcode\":10000,\"errmsg\":\"标签的所属业务对象为空\"}";	
+				}else{
+					tagObjectId = tagObject.getTagObjectId();
+				}
+			}
+			
 	    	if(StringUtils.isBlank(dispatchUserNameFrom)){
 	    		logger.debug("必要参数为空");
 	    		return "{\"errcode\":10000,\"errmsg\":\"必要参数为空\"}";
@@ -203,9 +254,10 @@ public class TagController {
 	    	}
 	    	
 	    	//分别查询这两个人是否创建过标签
-	    	List<Tag> tagFroms = tagService.findTag(tagTypeId, dispatchUserNameFrom);
-	    	List<Tag> tagTos = tagService.findTag(tagTypeId, dispatchUserNameTo);
+	    	List<Tag> tagFroms = tagService.findTag(tagGroupId, dispatchUserNameFrom, tagObjectId);
+	    	List<Tag> tagTos = tagService.findTag(tagGroupId, dispatchUserNameTo, tagObjectId);
 	    	
+	    	//接收者
 	    	List<String> tagToTagNames = new ArrayList<String>();
 	    	for(Tag tag : tagTos){
 	    		tagToTagNames.add(tag.getTagName());
@@ -233,13 +285,15 @@ public class TagController {
 	    			for(Tag tag : tagFroms){
 	    				Map<String, Integer> map = new HashMap<String, Integer>();
 	    	    		map.put("tag_id", tag.getTagId());
-	    				List<Tagmap> tagmaps = tagmapService.findTagMapByTagId(map);
+	    	    		map.put("tag_group_id", tag.getTagGroupId());
+	    	    		map.put("tag_object_id", tag.getTagObjectId());
+	    				List<Tagmap> tagmaps = tagmapService.findTagMapByMap(map);
 	    				
 	    				//如果创建有相同名称标签
 	    				if(tagToTagNames.contains(tag.getTagName())){
 	    					for(Tagmap tagmap : tagmaps){
 	    						Integer businessId = tagmap.getBusinessId();
-	    						Tag tag_ = tagService.getTag(tagTypeId, tag.getTagName(), dispatchUserNameTo);
+	    						Tag tag_ = tagService.getTag(tag.getTagGroupId(), tag.getTagName(), dispatchUserNameTo, tag.getTagObjectId());
 		    					//更新标签使用数量
 		    					tag_.setTabUseNum(tag_.getTabUseNum()+1);
 		    					/*更新*/
@@ -248,6 +302,8 @@ public class TagController {
 		    					tagmap = new Tagmap();
 		    					tagmap.setTagId(tag_.getTagId());
 		    					tagmap.setBusinessId(businessId);
+		    					tagmap.setTagGroupId(tagGroupId);
+		    					tagmap.setTagObjectId(tagObjectId);
 		    					tagmap.setTagmapCreateTime(new Date());
 		    					tagmap.setTagmapUpdateTime(new Date());
 		    					/*保存*/
@@ -284,6 +340,8 @@ public class TagController {
     @ResponseBody
     public String searchBusinessId(HttpServletRequest request){
 		try{
+			Integer tagObjectId = null;
+			Integer tagGroupId = null;
 			String jsonStr = RequestUtil.getRequestPostData(request);
 	    	if(jsonStr.length() == 0){
 	    		logger.debug("接收的数据为空");
@@ -291,14 +349,36 @@ public class TagController {
 	    	}
 	    	
 	    	JSONObject jsonObject = gson.fromJson(jsonStr, new TypeToken<JSONObject>() {}.getType());
-	    	Integer tagTypeId = jsonObject.getInt("tagTypeId");
+	    	String tagGroupName = jsonObject.getString("tagGroupName");
 	    	String tagName = jsonObject.getString("tagName");
 	    	String tagCreateObject = jsonObject.getString("tagCreateObject");
+	    	String tagObjectCode = jsonObject.getString("tagObjectCode");
 	    	
-	    	if(tagTypeId == null){
-	    		logger.debug("必要参数为空");
-	    		return "{\"errcode\":10000,\"errmsg\":\"必要参数为空\"}";
-	    	}
+	    	if(StringUtils.isBlank(tagObjectCode)){
+				logger.debug("标签的所属业务编码为空");
+	    		return "{\"errcode\":10000,\"errmsg\":\"标签的所属业务编码为空\"}";	
+			}else{
+				TagObject tagObject = tagObjectService.getTagObjectByCode(tagObjectCode);
+				if(tagObject == null){
+					logger.debug("标签的所属业务对象为空");
+		    		return "{\"errcode\":10000,\"errmsg\":\"标签的所属业务对象为空\"}";	
+				}else{
+					tagObjectId = tagObject.getTagObjectId();
+				}
+			}
+			
+			if(StringUtils.isBlank(tagGroupName)){
+				logger.debug("标签组名称为空");
+	    		return "{\"errcode\":10000,\"errmsg\":\"标签组名称为空\"}";
+			}else{
+				TagGroup tagGroup = tagGroupService.getTagGroupByName(tagGroupName);
+				if(tagGroup == null){
+					logger.debug("标签组不存在");
+		    		return "{\"errcode\":10000,\"errmsg\":\"tagGroup\"}";
+				}else{
+					tagGroupId = tagGroup.getTagGroupId();
+				}
+			}
 	    	
 	    	if(StringUtils.isBlank(tagName)){
 	    		logger.debug("必要参数为空");
@@ -310,12 +390,12 @@ public class TagController {
 	    		return "{\"errcode\":10000,\"errmsg\":\"必要参数为空\"}";
 	    	}
 	    	
-	    	List<Tag> tags = tagService.findTag(tagTypeId, tagName, tagCreateObject);
+	    	List<Tag> tags = tagService.findTag(tagGroupId, tagName, tagCreateObject, tagObjectId);
 	    	String result = "";
 	    	for(Tag tag : tags){
 	    		Map<String, Integer> map = new HashMap<String, Integer>();
 	    		map.put("tag_id", tag.getTagId());
-	    		List<Tagmap> tagmaps = tagmapService.findTagMapByTagId(map);
+	    		List<Tagmap> tagmaps = tagmapService.findTagMapByMap(map);
 	    		for(Tagmap tagmap : tagmaps){
 	    			result += tagmap.getBusinessId()+",";
 	    		}
@@ -342,6 +422,8 @@ public class TagController {
     @ResponseBody
 	public String cancelTag(HttpServletRequest request){
 		try{
+			Integer tagObjectId = null;
+			Integer tagGroupId = null;
 			String jsonStr = RequestUtil.getRequestPostData(request);
 	    	if(jsonStr.length() == 0){
 	    		logger.debug("接收的数据为空");
@@ -349,15 +431,37 @@ public class TagController {
 	    	}
 	    	
 	    	JSONObject jsonObject = gson.fromJson(jsonStr, new TypeToken<JSONObject>() {}.getType());
-	    	Integer tagTypeId = jsonObject.getInt("tagTypeId");
+	    	String tagGroupName = jsonObject.getString("tagGroupName");
 	    	String tagName = jsonObject.getString("tagName");
 	    	String tagCreateObject = jsonObject.getString("tagCreateObject");
-	    	Integer businessId = jsonObject.getInt("businessId");
+	    	String tagObjectCode = jsonObject.getString("tagObjectCode");
+	    	Integer businessId = jsonObject.getInt("businessId"); 
 	    	
-	    	if(tagTypeId == null){
-	    		logger.debug("必要参数为空");
-	    		return "{\"errcode\":10000,\"errmsg\":\"必要参数为空\"}";
-	    	}
+	    	if(StringUtils.isBlank(tagObjectCode)){
+				logger.debug("标签的所属业务编码为空");
+	    		return "{\"errcode\":10000,\"errmsg\":\"标签的所属业务编码为空\"}";	
+			}else{
+				TagObject tagObject = tagObjectService.getTagObjectByCode(tagObjectCode);
+				if(tagObject == null){
+					logger.debug("标签的所属业务对象为空");
+		    		return "{\"errcode\":10000,\"errmsg\":\"标签的所属业务对象为空\"}";	
+				}else{
+					tagObjectId = tagObject.getTagObjectId();
+				}
+			}
+			
+			if(StringUtils.isBlank(tagGroupName)){
+				logger.debug("标签组名称为空");
+	    		return "{\"errcode\":10000,\"errmsg\":\"标签组名称为空\"}";
+			}else{
+				TagGroup tagGroup = tagGroupService.getTagGroupByName(tagGroupName);
+				if(tagGroup == null){
+					logger.debug("标签组不存在");
+		    		return "{\"errcode\":10000,\"errmsg\":\"tagGroup\"}";
+				}else{
+					tagGroupId = tagGroup.getTagGroupId();
+				}
+			}
 	    	
 	    	if(StringUtils.isBlank(tagName)){
 	    		logger.debug("必要参数为空");
@@ -373,7 +477,7 @@ public class TagController {
 	    		return "{\"errcode\":10000,\"errmsg\":\"必要参数为空\"}";
 	    	}
 	    	
-	    	Tag tag = tagService.getTag(tagTypeId, tagName, tagCreateObject);
+	    	Tag tag = tagService.getTag(tagGroupId, tagName, tagCreateObject, tagObjectId);
 	    	if(tag != null){
 	    		tag.setTabUseNum(tag.getTabUseNum() - 1);
 	    		tagmapService.delTagmap(businessId, tag);

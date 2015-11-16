@@ -20,7 +20,7 @@ import com.hummingbird.tag.model.Tagmap;
 @Repository
 public class TagmapDaoImpl implements TagmapDao {
 	
-	private static String tagmap_sql = "tagmap_id, tag_id, business_id, tagmap_create_time, tagmap_update_time";
+	private static String tagmap_sql = "tagmap_id, tag_id, tag_group_id, tag_object_id, tagmap_create_time, tagmap_update_time, business_id";
 	
 	@Autowired
     private JdbcTemplate jdbcTemplate;
@@ -31,7 +31,7 @@ public class TagmapDaoImpl implements TagmapDao {
             NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
             SqlParameterSource paramSource = new BeanPropertySqlParameterSource(tagmap);
             String sql = "insert into t_tagmap("+tagmap_sql+") " +
-            		"values (:tagmapId, :tagId, :businessId, :tagmapCreateTime, :tagmapUpdateTime)";
+            		"values (:tagmapId, :tagId, :tagGroupId, :tagObjectId, :tagmapCreateTime, :tagmapUpdateTime, :businessId)";
 
             KeyHolder keyHolder = new GeneratedKeyHolder();
             namedParameterJdbcTemplate.update(sql, paramSource, keyHolder);
@@ -44,10 +44,16 @@ public class TagmapDaoImpl implements TagmapDao {
 	}
 
 	@Override
-	public List<Tagmap> findTagMapByTagId(Map<String, Integer> map) {
+	public List<Tagmap> findTagMapByMap(Map<String, Integer> map) {
 		String sql = "select "+tagmap_sql+" from t_tagmap where 1=1";
 		if(map.get("tag_id") != null){
 			sql +=" and tag_id="+map.get("tag_id")+"";
+		}
+		if(map.get("tag_group_id") != null){
+			sql +=" and tag_group_id="+map.get("tag_group_id")+"";
+		}
+		if(map.get("tag_object_id") != null){
+			sql +=" and tag_object_id="+map.get("tag_object_id")+"";
 		}
 		if(map.get("business_id") != null){
 			sql +=" and business_id="+map.get("business_id")+"";
@@ -58,16 +64,16 @@ public class TagmapDaoImpl implements TagmapDao {
 
 	@Override
 	public int updateTagmap(Tagmap tagmap) {
-		String sql = "update t_tagmap set tag_id=?, business_id=?, tagmap_update_time=? where tagmap_id=?";
+		String sql = "update t_tagmap set tag_id=?, tag_group_id=?, tag_object_id=?, tagmap_update_time=?, business_id=? where tagmap_id=?";
         int count = jdbcTemplate.update(
-                sql, tagmap.getTagId(), tagmap.getBusinessId(), new Date(), tagmap.getTagmapId());
+                sql, tagmap.getTagId(), tagmap.getTagGroupId(), tagmap.getTagObjectId(), new Date(), tagmap.getBusinessId(), tagmap.getTagmapId());
         return count;
 	}
 
 	@Override
-	public Tagmap getTagmap(Integer tagId, Integer businessId) {
-		String sql = "select "+tagmap_sql+" from t_tagmap where 1=1 and tag_id=? and business_id=?";
-		List<Tagmap> tagmaps = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Tagmap.class), tagId, businessId);
+	public Tagmap getTagmap(Integer tagId, Integer tarTypeId, Integer objectId, Integer id) {
+		String sql = "select "+tagmap_sql+" from t_tagmap where 1=1 and tag_id=? and tag_type_id=? and object_id=? and id=?";
+		List<Tagmap> tagmaps = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Tagmap.class), tagId, tarTypeId, objectId, id);
 		if(tagmaps.size() > 0){
 			return tagmaps.get(0);
 		}else{

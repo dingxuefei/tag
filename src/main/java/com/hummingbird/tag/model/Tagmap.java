@@ -7,30 +7,17 @@ public class Tagmap {
 
     private Integer tagId;
 
-    private Integer businessId;
+    private Integer tagGroupId;
+
+    private Integer tagObjectId;
 
     private Date tagmapCreateTime;
 
     private Date tagmapUpdateTime;
 
-    
-    
-    public Tagmap() {
-		super();
-	}
+    private Integer businessId;
 
-    
-	public Tagmap(Integer tagmapId, Integer tagId, Integer businessId, Date tagmapCreateTime, Date tagmapUpdateTime) {
-		super();
-		this.tagmapId = tagmapId;
-		this.tagId = tagId;
-		this.businessId = businessId;
-		this.tagmapCreateTime = tagmapCreateTime;
-		this.tagmapUpdateTime = tagmapUpdateTime;
-	}
-
-
-	public Integer getTagmapId() {
+    public Integer getTagmapId() {
         return tagmapId;
     }
 
@@ -46,12 +33,20 @@ public class Tagmap {
         this.tagId = tagId;
     }
 
-    public Integer getBusinessId() {
-        return businessId;
+    public Integer getTagGroupId() {
+        return tagGroupId;
     }
 
-    public void setBusinessId(Integer businessId) {
-        this.businessId = businessId;
+    public void setTagGroupId(Integer tagGroupId) {
+        this.tagGroupId = tagGroupId;
+    }
+
+    public Integer getTagObjectId() {
+        return tagObjectId;
+    }
+
+    public void setTagObjectId(Integer tagObjectId) {
+        this.tagObjectId = tagObjectId;
     }
 
     public Date getTagmapCreateTime() {
@@ -70,13 +65,37 @@ public class Tagmap {
         this.tagmapUpdateTime = tagmapUpdateTime;
     }
 
+    public Integer getBusinessId() {
+        return businessId;
+    }
+
+    public void setBusinessId(Integer businessId) {
+        this.businessId = businessId;
+    }
+
+	public Tagmap() {
+		super();
+	}
+
+	public Tagmap(Integer tagmapId, Integer tagId, Integer tagGroupId,
+			Integer tagObjectId, Date tagmapCreateTime, Date tagmapUpdateTime,
+			Integer businessId) {
+		super();
+		this.tagmapId = tagmapId;
+		this.tagId = tagId;
+		this.tagGroupId = tagGroupId;
+		this.tagObjectId = tagObjectId;
+		this.tagmapCreateTime = tagmapCreateTime;
+		this.tagmapUpdateTime = tagmapUpdateTime;
+		this.businessId = businessId;
+	}
 
 	@Override
 	public String toString() {
 		return "Tagmap [tagmapId=" + tagmapId + ", tagId=" + tagId
-				+ ", businessId=" + businessId + ", tagmapCreateTime=" + tagmapCreateTime
-				+ ", tagmapUpdateTime=" + tagmapUpdateTime + "]";
+				+ ", tagGroupId=" + tagGroupId + ", tagObjectId=" + tagObjectId
+				+ ", tagmapCreateTime=" + tagmapCreateTime
+				+ ", tagmapUpdateTime=" + tagmapUpdateTime + ", businessId="
+				+ businessId + "]";
 	}
-    
-    
 }

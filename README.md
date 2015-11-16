@@ -12,13 +12,14 @@ http请求方式: post
 
 POST数据格式：JSON
 
-{"tagName":"重要","tagCreateObject":"张三","tagTypeId":1,"businessId":1}
+{"tagName":"重要","tagCreateObject":"张三","tagGroupName":"组名称","tagObjectCode":"KH","businessId":1}
 
 参数|是否必须|说明
 ----|----|-----
 tagName|是|标签名称
 tagCreateObject|是|标签的创建者
-tagTypeId|是|标签的类型ID
+tagGroupName|是|组名称
+tagObjectCode|是|标签的所属业务编码
 businessId|是|被打标签的信息ID
 
 返回说明
@@ -47,13 +48,14 @@ http请求方式: post
 
 POST数据格式：JSON
 
-{"dispatchUserNameFrom":"李四","tagTypeId":1,"dispatchUserNameTo":"张三"}
+{"dispatchUserNameFrom":"李四","dispatchUserNameTo":"张三","tagGroupName":"组名称","tagObjectCode":"KH"}
 
 参数|是否必须|说明
 ----|----|-----
 dispatchUserNameFrom|是|需要被调配的人
-tagTypeId|是|标签的类型ID
 dispatchUserNameTo|是|调配的接收者
+tagGroupName|是|组名称
+tagObjectCode|是|标签的所属业务编码
 
 返回说明
 
@@ -81,13 +83,15 @@ http请求方式: post
 
 POST数据格式：JSON
 
-{"tagTypeId":1,"tagCreateObject":"张三","tagName":"次要"}
+{"tagGroupName":"组名称","tagCreateObject":"张三","tagName":"次要","tagObjectCode":"KH"}
 
 参数|是否必须|说明
 ----|----|-----
-tagTypeId|是|标签类型ID
-tagCreateObject|是|标签的创建者
 tagName|是|标签名称（支持模糊查询）
+tagCreateObject|是|标签的创建者
+tagGroupName|是|组名称
+tagObjectCode|是|标签的所属业务编码
+
 
 
 返回说明：
@@ -110,13 +114,14 @@ http请求方式: post
 
 POST数据格式：JSON
 
-{"tagName":"重要","tagCreateObject":"张三","tagTypeId":1,"businessId":1}
+{"tagName":"重要","tagCreateObject":"张三","tagGroupName":"组名称","tagObjectCode":"KH","businessId":1}
 
 参数|是否必须|说明
 ----|----|-----
 tagName|是|标签名称
 tagCreateObject|是|标签的创建者
-tagTypeId|是|标签的类型ID
+tagGroupName|是|组名称
+tagObjectCode|是|标签的所属业务编码
 businessId|是|被打标签的信息ID
 
 返回说明

@@ -15,8 +15,8 @@ public class HttpPostUtils {
 
     public final static int DEFAULT_BUFFER_SIZE = 1024;
 
-    private static final int CONNECT_TIMEOUT =  5000;
-    private static final int READ_TIMEOUT = 5000;
+    private static final int CONNECT_TIMEOUT =  10000;
+    private static final int READ_TIMEOUT = 10000;
 
     /**
      * 发送http get请求
@@ -31,8 +31,8 @@ public class HttpPostUtils {
 
             uc = (HttpURLConnection) url.openConnection();
             uc.setRequestMethod("GET");
-            uc.setConnectTimeout(CONNECT_TIMEOUT); // 五秒连接超时
-            uc.setReadTimeout(READ_TIMEOUT); // 5秒返回超时
+            uc.setConnectTimeout(CONNECT_TIMEOUT); 
+            uc.setReadTimeout(READ_TIMEOUT);
             uc.connect();
             StringWriter lines = new StringWriter();
             try {
@@ -64,7 +64,6 @@ public class HttpPostUtils {
     /**
      * 发送http Post请求
      * @param urladdress  地址
-     * @param param 参数 "aa=22&bb=33"
      * @return
      */
     public static String sendHttpPost(String urladdress, String param) throws Exception {
@@ -77,8 +76,8 @@ public class HttpPostUtils {
             uc.setDoOutput(true);
             uc.setInstanceFollowRedirects(true); // 不允许重定向
             uc.setRequestMethod("POST");
-            uc.setConnectTimeout(CONNECT_TIMEOUT); // 五秒连接超时
-            uc.setReadTimeout(READ_TIMEOUT); // 5秒返回超时
+            uc.setConnectTimeout(CONNECT_TIMEOUT); 
+            uc.setReadTimeout(READ_TIMEOUT); 
             uc.getOutputStream().write(param.getBytes());
             uc.connect();
             String lines = "";

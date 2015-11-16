@@ -26,33 +26,18 @@ public class TagServiceImpl implements TagService {
 	}
 
 	@Override
-	public List<Tag> findTag(String tagName) {
-		return tagDao.findTag(tagName);
-	}
-
-	@Override
-	public Tag getTagByTagId(Integer tagId) {
-		return tagDao.getTagByTagId(tagId);
-	}
-
-	@Override
-	public List<Tag> findTag(Integer tagTypeId) {
-		return tagDao.findTag(tagTypeId);
-	}
-
-	@Override
 	public int updateTag(Tag tag) {
 		return tagDao.updateTag(tag);
 	}
 
 	@Override
-	public Tag getTag(Integer tagTypeId, String tagName, String tagCreateObject) {
-		return tagDao.getTag(tagTypeId, tagName, tagCreateObject);
+	public Tag getTag(Integer tagGroupId, String tagName, String tagCreateObject, Integer tagObjectId) {
+		return tagDao.getTag(tagGroupId, tagName, tagCreateObject, tagObjectId);
 	}
 
 	@Override
-	public List<Tag> findTag(Integer tagTypeId, String tagCreateObject) {
-		return tagDao.findTag(tagTypeId, tagCreateObject);
+	public List<Tag> findTag(Integer tagGroupId, String tagCreateObject, Integer tagObjectId) {
+		return tagDao.findTag(tagGroupId, tagCreateObject, tagObjectId);
 	}
 
 	@Override
@@ -61,8 +46,8 @@ public class TagServiceImpl implements TagService {
 	}
 
 	@Override
-	public List<Tag> findTag(Integer tagTypeId, String tagName, String tagCreateObject) {
-		return tagDao.findTag(tagTypeId, tagName, tagCreateObject);
+	public List<Tag> findTag(Integer tagGroupId, String tagName, String tagCreateObject, Integer tagObjectId) {
+		return tagDao.findTag(tagGroupId, tagName, tagCreateObject, tagObjectId);
 	}
 
 	@Override

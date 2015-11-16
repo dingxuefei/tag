@@ -29,7 +29,7 @@ public interface TagmapService {
 	 * @param tagId
 	 * @return
 	 */
-	public List<Tagmap> findTagMapByTagId(Map<String, Integer> map);
+	public List<Tagmap> findTagMapByMap(Map<String, Integer> map);
 	
 	
 	/**
@@ -41,21 +41,15 @@ public interface TagmapService {
 	
 	
 	/**
-	 * 根据标签和具体的对象ID查询对象
+	 * 根据条件查找对象
 	 * @param tagId
+	 * @param tagGroupId
+	 * @param tagObjectId
 	 * @param businessId
 	 * @return
 	 */
-	public Tagmap getTagmap(Integer tagId, Integer businessId);
+	public Tagmap getTagmap(Integer tagId, Integer tagGroupId, Integer tagObjectId, Integer businessId);
 	
-	
-	/**
-	 * 删除关联
-	 * @param tagId
-	 * @param businessId
-	 * @return
-	 */
-	public int delTagmap(Integer tagId, Integer businessId);
 	
 	
 	/**

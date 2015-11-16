@@ -15,30 +15,6 @@ public interface TagDao {
 	
 	
 	/**
-	 * 根据名称查找标签列表
-	 * @param tagName  标签名称
-	 * @return
-	 */
-	public List<Tag> findTag(String tagName);
-	
-	
-	/**
-	 * 根据主键查找对象
-	 * @param tagId  标签ID
-	 * @return
-	 */
-	public Tag getTagByTagId(Integer tagId);
-	
-	
-	/**
-	 * 根据分类查找标签列表
-	 * @param tagTypeId  标签类型ID
-	 * @return
-	 */
-	public List<Tag> findTag(Integer tagTypeId);
-	
-	
-	/**
 	 * 修改标签
 	 * @param tag  标签对象
 	 * @return
@@ -47,22 +23,24 @@ public interface TagDao {
 	
 	
 	/**
-	 * 根据标签类型ID和标签名称，标签创建者查找对象
-	 * @param tagTypeId  标签类型ID
+	 * 根据标标签组ID、标签名称、标签创建者、标签的所属业务ID查找对象
+	 * @param tagGroupId  标签组ID
 	 * @param tagName  标签名称
 	 * @param tagCreateObject  标签的创建者
+	 * @param tagObjectId  标签的所属业务ID
 	 * @return
 	 */
-	public Tag getTag(Integer tagTypeId, String tagName, String tagCreateObject);
+	public Tag getTag(Integer tagGroupId, String tagName, String tagCreateObject, Integer tagObjectId);
 	
 	
 	/**
 	 * 根据条件查找标签列表
-	 * @param tagTypeId  标签类型ID
+	 * @param tagGroupId  标签组ID
 	 * @param tagCreateObject  标签的创建者
+	 * @param tagObjectId  标签的所属业务ID
 	 * @return
 	 */
-	public List<Tag> findTag(Integer tagTypeId, String tagCreateObject);
+	public List<Tag> findTag(Integer tagGroupId, String tagCreateObject, Integer tagObjectId);
 	
 	
 	/**
@@ -73,12 +51,14 @@ public interface TagDao {
 	public int delTag(Integer tagId);
 	
 	
+	
 	/**
-	 * 根据标签类型ID和标签名称（模糊），标签创建者查找列表
-	 * @param tagTypeId  标签类型ID
+	 * 根据标签组ID、标签名称（模糊）、标签创建者查、标签的所属业务ID返回集合
+	 * @param tagGroupId  标签组ID
 	 * @param tagName  标签名称
 	 * @param tagCreateObject  标签的创建者
 	 * @return
 	 */
-	public List<Tag> findTag(Integer tagTypeId, String tagName, String tagCreateObject);
+	public List<Tag> findTag(Integer tagGroupId, String tagName, String tagCreateObject, Integer tagObjectId);
+	
 }

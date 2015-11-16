@@ -5,45 +5,52 @@ import java.util.Date;
 public class Tag {
     private Integer tagId;
 
+    private Integer tagObjectId;
+
+    private Integer tagGroupId;
+
     private String tagName;
 
     private Integer tabUseNum;
 
     private Date tagCreateTime;
 
-    private Date tagUpdateTime;
-    
     private Integer tagStatus;
 
     private String tagCreateObject;
 
-    private Integer tagTypeId;
+    private Date tagUpdateTime;
+
+    private String tagUpdateRemark;
+    
+    private String tagGroupName;
+    
+    private String tagObjectCode;
     
     private Integer businessId;
-    
-    private String tagUpdateRemark;
 
     public Tag() {
 		super();
 	}
-
- 
-
-	public Tag(Integer tagId, String tagName, Integer tabUseNum,
-			Date tagCreateTime, Date tagUpdateTime, Integer tagStatus,
-			String tagCreateObject, Integer tagTypeId, Integer businessId, String tagUpdateRemark) {
+    
+	public Tag(Integer tagId, Integer tagObjectId, Integer tagGroupId,
+			String tagName, Integer tabUseNum, Date tagCreateTime,
+			Integer tagStatus, String tagCreateObject, Date tagUpdateTime,
+			String tagUpdateRemark) {
 		super();
 		this.tagId = tagId;
+		this.tagObjectId = tagObjectId;
+		this.tagGroupId = tagGroupId;
 		this.tagName = tagName;
 		this.tabUseNum = tabUseNum;
 		this.tagCreateTime = tagCreateTime;
-		this.tagUpdateTime = tagUpdateTime;
 		this.tagStatus = tagStatus;
 		this.tagCreateObject = tagCreateObject;
-		this.tagTypeId = tagTypeId;
-		this.businessId = businessId;
+		this.tagUpdateTime = tagUpdateTime;
 		this.tagUpdateRemark = tagUpdateRemark;
 	}
+
+
 
 	public Integer getTagId() {
         return tagId;
@@ -51,6 +58,22 @@ public class Tag {
 
     public void setTagId(Integer tagId) {
         this.tagId = tagId;
+    }
+
+    public Integer getTagObjectId() {
+        return tagObjectId;
+    }
+
+    public void setTagObjectId(Integer tagObjectId) {
+        this.tagObjectId = tagObjectId;
+    }
+
+    public Integer getTagGroupId() {
+        return tagGroupId;
+    }
+
+    public void setTagGroupId(Integer tagGroupId) {
+        this.tagGroupId = tagGroupId;
     }
 
     public String getTagName() {
@@ -93,20 +116,36 @@ public class Tag {
         this.tagCreateObject = tagCreateObject == null ? null : tagCreateObject.trim();
     }
 
-    public Integer getTagTypeId() {
-        return tagTypeId;
+    public Date getTagUpdateTime() {
+        return tagUpdateTime;
     }
 
-    public void setTagTypeId(Integer tagTypeId) {
-        this.tagTypeId = tagTypeId;
+    public void setTagUpdateTime(Date tagUpdateTime) {
+        this.tagUpdateTime = tagUpdateTime;
     }
 
-	public Date getTagUpdateTime() {
-		return tagUpdateTime;
+    public String getTagUpdateRemark() {
+        return tagUpdateRemark;
+    }
+
+    public void setTagUpdateRemark(String tagUpdateRemark) {
+        this.tagUpdateRemark = tagUpdateRemark == null ? null : tagUpdateRemark.trim();
+    }
+
+	public String getTagGroupName() {
+		return tagGroupName;
 	}
 
-	public void setTagUpdateTime(Date tagUpdateTime) {
-		this.tagUpdateTime = tagUpdateTime;
+	public void setTagGroupName(String tagGroupName) {
+		this.tagGroupName = tagGroupName;
+	}
+
+	public String getTagObjectCode() {
+		return tagObjectCode;
+	}
+
+	public void setTagObjectCode(String tagObjectCode) {
+		this.tagObjectCode = tagObjectCode;
 	}
 
 	public Integer getBusinessId() {
@@ -117,25 +156,13 @@ public class Tag {
 		this.businessId = businessId;
 	}
 
-	public String getTagUpdateRemark() {
-		return tagUpdateRemark;
-	}
-
-	public void setTagUpdateRemark(String tagUpdateRemark) {
-		this.tagUpdateRemark = tagUpdateRemark;
-	}
-
-
-
 	@Override
 	public String toString() {
-		return "Tag [tagId=" + tagId + ", tagName=" + tagName + ", tabUseNum="
-				+ tabUseNum + ", tagCreateTime=" + tagCreateTime
-				+ ", tagUpdateTime=" + tagUpdateTime + ", tagStatus="
-				+ tagStatus + ", tagCreateObject=" + tagCreateObject
-				+ ", tagTypeId=" + tagTypeId + ", businessId=" + businessId
-				+ ", tagUpdateRemark=" + tagUpdateRemark + "]";
+		return "Tag [tagId=" + tagId + ", tagObjectId=" + tagObjectId
+				+ ", tagGroupId=" + tagGroupId + ", tagName=" + tagName
+				+ ", tabUseNum=" + tabUseNum + ", tagCreateTime="
+				+ tagCreateTime + ", tagStatus=" + tagStatus
+				+ ", tagCreateObject=" + tagCreateObject + ", tagUpdateTime="
+				+ tagUpdateTime + ", tagUpdateRemark=" + tagUpdateRemark + "]";
 	}
-
-
 }

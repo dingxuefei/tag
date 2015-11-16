@@ -27,8 +27,8 @@ public class TagmapServiceImpl implements TagmapService {
 	}
 
 	@Override
-	public List<Tagmap> findTagMapByTagId(Map<String, Integer> map) {
-		return tagmapDao.findTagMapByTagId(map);
+	public List<Tagmap> findTagMapByMap(Map<String, Integer> map) {
+		return tagmapDao.findTagMapByMap(map);
 	}
 
 	@Override
@@ -37,14 +37,10 @@ public class TagmapServiceImpl implements TagmapService {
 	}
 
 	@Override
-	public Tagmap getTagmap(Integer tagId, Integer businessId) {
-		return tagmapDao.getTagmap(tagId, businessId);
+	public Tagmap getTagmap(Integer tagId, Integer tagGroupId, Integer tagObjectId, Integer businessId) {
+		return tagmapDao.getTagmap(tagId, tagGroupId, tagObjectId, businessId);
 	}
 
-	@Override
-	public int delTagmap(Integer tagId, Integer businessId) {
-		return tagmapDao.delTagmap(tagId, businessId);
-	}
 
 	@Override
 	public void delTagmap(Integer businessId, Tag tag) {
