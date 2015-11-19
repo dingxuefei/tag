@@ -8,7 +8,7 @@ import com.hummingbird.tag.model.TagObject;
 import com.hummingbird.tag.service.TagObjectService;
 
 
-@Service
+@Service("TagObjectService")
 public class TagObjectServiceImpl implements TagObjectService {
 
 	@Autowired

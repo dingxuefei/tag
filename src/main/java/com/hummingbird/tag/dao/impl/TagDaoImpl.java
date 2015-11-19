@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 import com.hummingbird.tag.dao.TagDao;
 import com.hummingbird.tag.model.Tag;
 
-@Repository
+@Repository("TagDao")
 public class TagDaoImpl implements TagDao {
 	
 	private static String tag_sql = "tag_id, tag_object_id, tag_group_id, tag_name, tab_use_num, tag_create_time, tag_status, tag_create_object, tag_update_time, tag_update_remark";
@@ -47,7 +47,7 @@ public class TagDaoImpl implements TagDao {
 	public int updateTag(Tag tag) {
 		String sql = "update t_tag set tag_object_id=?, tag_group_id=?, tag_name=?, tab_use_num=?, tag_status=?, tag_update_time=?, tag_create_object=?, tag_update_remark=? where tag_id=?";
         int count = jdbcTemplate.update(
-                sql, tag.getTagObjectCode(), tag.getTagGroupId(), tag.getTagName(), tag.getTabUseNum(), tag.getTagStatus(), new Date(), tag.getTagCreateObject(), tag.getTagUpdateRemark(), tag.getTagId());
+                sql, tag.getTagObjectId(), tag.getTagGroupId(), tag.getTagName(), tag.getTabUseNum(), tag.getTagStatus(), new Date(), tag.getTagCreateObject(), tag.getTagUpdateRemark(), tag.getTagId());
         return count;
 	}
 
@@ -78,7 +78,7 @@ public class TagDaoImpl implements TagDao {
 
 	@Override
 	public List<Tag> findTag(Integer tagGroupId, String tagName, String tagCreateObject, Integer tagObjectId) {
-		String sql = "select "+tag_sql+" from t_tag where 1=1 and tag_group_id=? and tag_name='%"+tagName+"%' and tag_create_object=? and tag_object_id=?";
+		String sql = "select "+tag_sql+" from t_tag where 1=1 and tag_group_id=? and tag_name like '%"+tagName+"%' and tag_create_object=? and tag_object_id=?";
 		List<Tag> tags = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Tag.class), tagGroupId, tagCreateObject, tagObjectId);
 		return tags;
 	}

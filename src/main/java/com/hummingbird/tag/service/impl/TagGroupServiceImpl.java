@@ -7,7 +7,7 @@ import com.hummingbird.tag.dao.TagGroupDao;
 import com.hummingbird.tag.model.TagGroup;
 import com.hummingbird.tag.service.TagGroupService;
 
-@Service
+@Service("TagGroupService")
 public class TagGroupServiceImpl implements TagGroupService {
 
 	@Autowired

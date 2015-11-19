@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.hummingbird.common.controller.BaseController;
 import com.hummingbird.tag.model.Tag;
 import com.hummingbird.tag.model.TagGroup;
 import com.hummingbird.tag.model.TagObject;
@@ -33,8 +34,8 @@ import com.hummingbird.tag.service.TagmapService;
 import com.hummingbird.tag.util.RequestUtil;
 
 @Controller
-@RequestMapping("/")
-public class TagController {
+@RequestMapping("/tag/")
+public class TagController extends BaseController {
 
 	@Autowired
 	private TagService tagService;
@@ -106,6 +107,7 @@ public class TagController {
 		    		return "{\"errcode\":10000,\"errmsg\":\"操作对象的编码为空\"}";	
 				}else{
 					tagObjectId = tagObject.getTagObjectId();
+					tag.setTagObjectId(tagObjectId);
 				}
 			}
 			
@@ -119,6 +121,7 @@ public class TagController {
 		    		return "{\"errcode\":10000,\"errmsg\":\"tagGroup\"}";
 				}else{
 					tagGroupId = tagGroup.getTagGroupId();
+					tag.setTagGroupId(tagGroupId);
 				}
 			}
 			

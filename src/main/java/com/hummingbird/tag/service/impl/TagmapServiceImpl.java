@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.hummingbird.tag.dao.TagDao;
 import com.hummingbird.tag.dao.TagmapDao;
@@ -12,7 +14,7 @@ import com.hummingbird.tag.model.Tag;
 import com.hummingbird.tag.model.Tagmap;
 import com.hummingbird.tag.service.TagmapService;
 
-@Service
+@Service("TagmapService")
 public class TagmapServiceImpl implements TagmapService {
 
 	@Autowired
@@ -21,6 +23,7 @@ public class TagmapServiceImpl implements TagmapService {
 	@Autowired
 	private TagDao tagDao;
 	
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class,value="txManager")
 	@Override
 	public Tagmap insertTagmap(Tagmap tagmap) {
 		return tagmapDao.insertTagmap(tagmap);
@@ -31,6 +34,8 @@ public class TagmapServiceImpl implements TagmapService {
 		return tagmapDao.findTagMapByMap(map);
 	}
 
+	
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class,value="txManager")
 	@Override
 	public int updateTagmap(Tagmap tagmap) {
 		return tagmapDao.updateTagmap(tagmap);
@@ -42,6 +47,7 @@ public class TagmapServiceImpl implements TagmapService {
 	}
 
 
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class,value="txManager")
 	@Override
 	public void delTagmap(Integer businessId, Tag tag) {
 		tagmapDao.delTagmap(tag.getTagId(), businessId);

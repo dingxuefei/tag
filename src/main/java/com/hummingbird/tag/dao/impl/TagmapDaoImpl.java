@@ -17,7 +17,7 @@ import org.springframework.stereotype.Repository;
 import com.hummingbird.tag.dao.TagmapDao;
 import com.hummingbird.tag.model.Tagmap;
 
-@Repository
+@Repository("TagmapDao")
 public class TagmapDaoImpl implements TagmapDao {
 	
 	private static String tagmap_sql = "tagmap_id, tag_id, tag_group_id, tag_object_id, tagmap_create_time, tagmap_update_time, business_id";
@@ -71,9 +71,9 @@ public class TagmapDaoImpl implements TagmapDao {
 	}
 
 	@Override
-	public Tagmap getTagmap(Integer tagId, Integer tarTypeId, Integer objectId, Integer id) {
-		String sql = "select "+tagmap_sql+" from t_tagmap where 1=1 and tag_id=? and tag_type_id=? and object_id=? and id=?";
-		List<Tagmap> tagmaps = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Tagmap.class), tagId, tarTypeId, objectId, id);
+	public Tagmap getTagmap(Integer tagId, Integer tagGroupId, Integer tagObjectId, Integer businessId) {
+		String sql = "select "+tagmap_sql+" from t_tagmap where 1=1 and tag_id=? and tag_group_id=? and tag_object_id=? and business_id=?";
+		List<Tagmap> tagmaps = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Tagmap.class), tagId, tagGroupId, tagObjectId, businessId);
 		if(tagmaps.size() > 0){
 			return tagmaps.get(0);
 		}else{

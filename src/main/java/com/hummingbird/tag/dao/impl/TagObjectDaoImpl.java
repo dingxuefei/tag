@@ -10,8 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.hummingbird.tag.dao.TagObjectDao;
 import com.hummingbird.tag.model.TagObject;
 
-
-@Repository
+@Repository("TagObjectDao")
 public class TagObjectDaoImpl implements TagObjectDao {
 
 	private static String object_sql = "tag_object_id, tag_object_code, tag_object_remark";

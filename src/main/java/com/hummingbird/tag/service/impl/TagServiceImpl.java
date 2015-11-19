@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.hummingbird.tag.dao.TagDao;
 import com.hummingbird.tag.dao.TagmapDao;
@@ -11,20 +13,23 @@ import com.hummingbird.tag.model.Tag;
 import com.hummingbird.tag.model.Tagmap;
 import com.hummingbird.tag.service.TagService;
 
-@Service
+@Service("TagService")
 public class TagServiceImpl implements TagService {
 	
 	@Autowired
 	private TagDao tagDao;
 	
 	@Autowired
-	private TagmapDao tagmapDap;
+	private TagmapDao tagmapDao;
 
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class,value="txManager")
 	@Override
 	public Tag insertTag(Tag tag) {
 		return tagDao.insertTag(tag);
 	}
 
+	
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class,value="txManager")
 	@Override
 	public int updateTag(Tag tag) {
 		return tagDao.updateTag(tag);
@@ -40,6 +45,8 @@ public class TagServiceImpl implements TagService {
 		return tagDao.findTag(tagGroupId, tagCreateObject, tagObjectId);
 	}
 
+	
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class,value="txManager")
 	@Override
 	public int delTag(Integer tagId) {
 		return tagDao.delTag(tagId);
@@ -50,11 +57,13 @@ public class TagServiceImpl implements TagService {
 		return tagDao.findTag(tagGroupId, tagName, tagCreateObject, tagObjectId);
 	}
 
+	
+	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class,value="txManager")
 	@Override
 	public void logic(Tag tag, Tagmap tagmap, Integer tagId, Integer businessId) {
 		tagDao.updateTag(tag);
-		tagmapDap.insertTagmap(tagmap);
-		tagmapDap.delTagmap(tagId, businessId);
+		tagmapDao.insertTagmap(tagmap);
+		tagmapDao.delTagmap(tagId, businessId);
 	}
 
 }

@@ -6,7 +6,7 @@
 
 ##1、添加标签接口说明
 
-http://ip:port/tag/insert
+http://xxx/tag/insert
 
 http请求方式: post
 
@@ -42,7 +42,7 @@ businessId|是|被打标签的信息ID
 
 ##2、标签创建人员发生变更时的调配接口
 
-http://ip:port/tag/tagDispatch
+http://xxx/tag/tagDispatch
 
 http请求方式: post
 
@@ -77,7 +77,7 @@ tagObjectCode|是|标签的所属业务编码
 
 ##3、搜索相关的信息
 
-http://ip:port/tag/searchBusinessId
+http://xxx/tag/searchBusinessId
 
 http请求方式: post
 
@@ -108,7 +108,7 @@ tagObjectCode|是|标签的所属业务编码
 
 ##4、移除标签
 
-http://ip:port/tag/cancelTag
+http://xxx/tag/cancelTag
 
 http请求方式: post
 
