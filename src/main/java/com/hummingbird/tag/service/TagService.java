@@ -78,4 +78,12 @@ public interface TagService {
 	 * @param businessId
 	 */
 	public void logic(Tag tag, Tagmap tagmap, Integer tagId, Integer businessId);
+	
+	
+	/**
+	 * 通过ID查询对象
+	 * @param tagId
+	 * @return
+	 */
+	public Tag getTag(Integer tagId);
 }

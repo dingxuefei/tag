@@ -492,4 +492,74 @@ public class TagController extends BaseController {
 			return "{\"errcode\":10000,\"errmsg\":\"系统错误，操作失败\"}";
 		}
 	}
+	
+	
+	
+	/**
+	 * 查询具体业务的标签列表
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "searchTag", method =RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
+    @ResponseBody
+	public String searchTag(HttpServletRequest request){
+		try{
+			Integer tagObjectId = null;
+			Integer tagGroupId = null;
+			String jsonStr = RequestUtil.getRequestPostData(request);
+	    	if(jsonStr.length() == 0){
+	    		logger.debug("接收的数据为空");
+	    		return "{\"errcode\":10000,\"errmsg\":\"接收的数据为空\"}";
+	    	}
+	    	
+	    	Tag tag = gson.fromJson(jsonStr, new TypeToken<Tag>() {}.getType());
+	    	String tagObjectCode = tag.getTagObjectCode();
+	    	String tagGroupName = tag.getTagGroupName();
+	    	Integer businessId = tag.getBusinessId();
+	    	
+			if(StringUtils.isBlank(tagObjectCode)){
+				logger.debug("标签的所属业务编码为空");
+	    		return "{\"errcode\":10000,\"errmsg\":\"标签的所属业务编码为空\"}";	
+			}else{
+				TagObject tagObject = tagObjectService.getTagObjectByCode(tagObjectCode);
+				if(tagObject == null){
+					logger.debug("操作对象的编码为空");
+		    		return "{\"errcode\":10000,\"errmsg\":\"操作对象的编码为空\"}";	
+				}else{
+					tagObjectId = tagObject.getTagObjectId();
+				}
+			}
+			
+			if(StringUtils.isBlank(tagGroupName)){
+				logger.debug("标签组名称为空");
+	    		return "{\"errcode\":10000,\"errmsg\":\"标签组名称为空\"}";
+			}else{
+				TagGroup tagGroup = tagGroupService.getTagGroupByName(tagGroupName);
+				if(tagGroup == null){
+					logger.debug("标签组不存在");
+		    		return "{\"errcode\":10000,\"errmsg\":\"tagGroup\"}";
+				}else{
+					tagGroupId = tagGroup.getTagGroupId();
+				}
+			}
+			
+			Map<String, Integer> map = new HashMap<String, Integer>();
+    		map.put("business_id", businessId);
+    		map.put("tag_group_id", tagGroupId);
+    		map.put("tag_object_id", tagObjectId);
+			List<Tagmap> tagmaps = tagmapService.findTagMapByMap(map);
+			List<Tag> tags = new ArrayList<Tag>();
+			for(Tagmap tagmap : tagmaps){
+				Integer tagId = tagmap.getTagId();
+				tags.add(tagService.getTag(tagId));
+			}
+			String result = gson.toJson(tags);
+			logger.debug("返回数据："+result);
+			return gson.toJson(result);
+		}catch(Exception e){
+			logger.error("系统错误，操作失败", e);
+			return "{\"errcode\":10000,\"errmsg\":\"系统错误，操作失败\"}";
+		}
+	}
 }

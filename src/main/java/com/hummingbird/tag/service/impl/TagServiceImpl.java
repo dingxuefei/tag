@@ -66,4 +66,10 @@ public class TagServiceImpl implements TagService {
 		tagmapDao.delTagmap(tagId, businessId);
 	}
 
+
+	@Override
+	public Tag getTag(Integer tagId) {
+		return tagDao.getTag(tagId);
+	}
+
 }

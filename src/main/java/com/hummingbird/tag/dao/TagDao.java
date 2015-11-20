@@ -61,4 +61,12 @@ public interface TagDao {
 	 */
 	public List<Tag> findTag(Integer tagGroupId, String tagName, String tagCreateObject, Integer tagObjectId);
 	
+	
+	/**
+	 * 通过ID查询对象
+	 * @param tagId
+	 * @return
+	 */
+	public Tag getTag(Integer tagId);
+	
 }

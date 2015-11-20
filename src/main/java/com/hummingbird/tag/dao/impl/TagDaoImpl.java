@@ -82,4 +82,16 @@ public class TagDaoImpl implements TagDao {
 		List<Tag> tags = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Tag.class), tagGroupId, tagCreateObject, tagObjectId);
 		return tags;
 	}
+
+
+	@Override
+	public Tag getTag(Integer tagId) {
+		String sql = "select "+tag_sql+" from t_tag where 1=1 and tag_id=?";
+		List<Tag> tags = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Tag.class), tagId);
+		if(tags.size() > 0){
+			return tags.get(0);
+		}else{
+			return null;
+		}
+	}
 }
