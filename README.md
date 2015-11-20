@@ -150,11 +150,10 @@ http请求方式: post
 
 POST数据格式：JSON
 
-{"tagCreateObject":"张三","tagGroupName":"组名称","tagObjectCode":"KH","businessId":1}
+{"tagGroupName":"组名称","tagObjectCode":"KH","businessId":1}
 
 参数|是否必须|说明
 ----|----|-----
-tagCreateObject|是|标签的创建者
 tagGroupName|是|组名称
 tagObjectCode|是|标签的所属业务编码
 businessId|是|被打标签的信息ID
@@ -171,5 +170,5 @@ businessId|是|被打标签的信息ID
 
 成功事例 
 
-[{"tagId\":1,"tagObjectId":1,"tagGroupId":1,"tagName":"市场活动","tabUseNum":1,"tagCreateTime":"Nov 19, 2015 5:55:33 PM","tagStatus":1,"tagCreateObject":"张三","tagUpdateTime":"Nov 20, 2015 5:57:19 PM","tagUpdateRemark":\"标签使用数量+1"}]  
+[{"tagId":1,"tagObjectId":1,"tagGroupId":1,"tagName":"市场活动","tabUseNum":1,"tagCreateTime":"Nov 19, 2015 5:55:33 PM","tagStatus":1,"tagCreateObject":"张三","tagUpdateTime":"Nov 20, 2015 5:57:19 PM","tagUpdateRemark":"标签使用数量+1"}]  
 
