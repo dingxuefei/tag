@@ -405,7 +405,7 @@ public class TagController extends BaseController {
 	    	}
 	    	
 	    	result = result.substring(0, result.length() - 1);
-	    	return result;
+	    	return "{\"errcode\":0000,\"errmsg\":\""+result+"\"}";
 	    	
 		}catch(Exception e){
 			logger.error("系统错误，查询失败", e);
@@ -556,7 +556,7 @@ public class TagController extends BaseController {
 			}
 			String result = gson.toJson(tags);
 			logger.debug("返回数据："+result);
-			return gson.toJson(result);
+			return "{\"errcode\":0000,\"errmsg\":"+result+"}";
 		}catch(Exception e){
 			logger.error("系统错误，操作失败", e);
 			return "{\"errcode\":10000,\"errmsg\":\"系统错误，操作失败\"}";

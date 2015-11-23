@@ -100,7 +100,15 @@ tagObjectCode|是|标签的所属业务编码
 
 格式：逗号隔开的数字
 
-内容事例：1,2,3,4
+内容事例：
+
+成功示例
+
+{"errcode":0000,"errmsg":"1,2,3,4"}
+
+不成功示例
+
+{"errcode":10000,"errmsg":"标签组名称为空"}
 
 
 
@@ -170,5 +178,6 @@ businessId|是|被打标签的信息ID
 
 成功事例 
 
-[{"tagId":1,"tagObjectId":1,"tagGroupId":1,"tagName":"市场活动","tabUseNum":1,"tagCreateTime":"Nov 19, 2015 5:55:33 PM","tagStatus":1,"tagCreateObject":"张三","tagUpdateTime":"Nov 20, 2015 5:57:19 PM","tagUpdateRemark":"标签使用数量+1"}]  
+{"errcode":0000,"errmsg":[{"tagId":1,"tagObjectId":1,"tagGroupId":1,"tagName":"市场活动","tabUseNum":1,"tagCreateTime":"Nov 19, 2015 5:55:33 PM","tagStatus":1,"tagCreateObject":"张三","tagUpdateTime":"Nov 20, 2015 5:57:19 PM","tagUpdateRemark":"标签使用数量+1"}]}
+  
 
