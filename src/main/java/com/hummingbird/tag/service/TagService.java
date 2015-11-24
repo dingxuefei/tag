@@ -36,20 +36,18 @@ public interface TagService {
 	 * @param tagGroupId  标签组ID
 	 * @param tagName  标签名称
 	 * @param tagCreateObject  标签的创建者
-	 * @param tagObjectId  标签的所属业务ID
 	 * @return
 	 */
-	public Tag getTag(Integer tagGroupId, String tagName, String tagCreateObject, Integer tagObjectId);
+	public Tag getTag(Integer tagGroupId, String tagName, String tagCreateObject);
 	
 	
 	/**
 	 * 根据条件查找标签列表
 	 * @param tagGroupId  标签组ID
 	 * @param tagCreateObject  标签的创建者
-	 * @param tagObjectId  标签的所属业务ID
 	 * @return
 	 */
-	public List<Tag> findTag(Integer tagGroupId, String tagCreateObject, Integer tagObjectId);
+	public List<Tag> findTag(Integer tagGroupId, String tagCreateObject);
 	
 	
 	/**
@@ -68,7 +66,8 @@ public interface TagService {
 	 * @param tagCreateObject  标签的创建者
 	 * @return
 	 */
-	public List<Tag> findTag(Integer tagGroupId, String tagName, String tagCreateObject, Integer tagObjectId);
+	public List<Tag> findTag(Integer tagGroupId, String tagName, String tagCreateObject);
+	
 	
 	/**
 	 * 调配的时候的处理
@@ -76,8 +75,10 @@ public interface TagService {
 	 * @param tagmap
 	 * @param tagId
 	 * @param businessId
+	 * @param tagGroupId
+	 * @param tagObjectId
 	 */
-	public void logic(Tag tag, Tagmap tagmap, Integer tagId, Integer businessId);
+	public void logic(Tag tag, Tagmap tagmap, Integer tagId, Integer businessId, Integer tagGroupId, Integer tagObjectId);
 	
 	
 	/**

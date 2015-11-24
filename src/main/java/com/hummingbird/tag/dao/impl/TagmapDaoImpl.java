@@ -82,9 +82,9 @@ public class TagmapDaoImpl implements TagmapDao {
 	}
 
 	@Override
-	public int delTagmap(Integer tagId, Integer businessId) {
-		String sql = "DELETE FROM t_tagmap where tag_id=? and business_id=?";
-		int count = jdbcTemplate.update(sql, tagId, businessId);
+	public int delTagmap(Integer tagId, Integer businessId, Integer tagObjectId, Integer tagGroupId) {
+		String sql = "DELETE FROM t_tagmap where tag_id=? and business_id=? and tag_object_id=? and tag_group_id=?";
+		int count = jdbcTemplate.update(sql, tagId, businessId, tagObjectId, tagGroupId);
 		return count;
 	}
 	

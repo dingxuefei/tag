@@ -107,7 +107,6 @@ public class TagController extends BaseController {
 		    		return "{\"errcode\":10000,\"errmsg\":\"操作对象的编码为空\"}";	
 				}else{
 					tagObjectId = tagObject.getTagObjectId();
-					tag.setTagObjectId(tagObjectId);
 				}
 			}
 			
@@ -125,7 +124,7 @@ public class TagController extends BaseController {
 				}
 			}
 			
-			Tag tag_ = tagService.getTag(tagGroupId, tagName, tagCreateObject, tagObjectId);
+			Tag tag_ = tagService.getTag(tagGroupId, tagName, tagCreateObject);
 			
 			if(tag_ != null){
 				Tagmap tagmap = tagmapService.getTagmap(tag_.getTagId(), tagGroupId, tagObjectId, businessId);
@@ -257,8 +256,8 @@ public class TagController extends BaseController {
 	    	}
 	    	
 	    	//分别查询这两个人是否创建过标签
-	    	List<Tag> tagFroms = tagService.findTag(tagGroupId, dispatchUserNameFrom, tagObjectId);
-	    	List<Tag> tagTos = tagService.findTag(tagGroupId, dispatchUserNameTo, tagObjectId);
+	    	List<Tag> tagFroms = tagService.findTag(tagGroupId, dispatchUserNameFrom);
+	    	List<Tag> tagTos = tagService.findTag(tagGroupId, dispatchUserNameTo);
 	    	
 	    	//接收者
 	    	List<String> tagToTagNames = new ArrayList<String>();
@@ -289,14 +288,14 @@ public class TagController extends BaseController {
 	    				Map<String, Integer> map = new HashMap<String, Integer>();
 	    	    		map.put("tag_id", tag.getTagId());
 	    	    		map.put("tag_group_id", tag.getTagGroupId());
-	    	    		map.put("tag_object_id", tag.getTagObjectId());
+	    	    		map.put("tag_object_id", tagObjectId);
 	    				List<Tagmap> tagmaps = tagmapService.findTagMapByMap(map);
 	    				
 	    				//如果创建有相同名称标签
 	    				if(tagToTagNames.contains(tag.getTagName())){
 	    					for(Tagmap tagmap : tagmaps){
 	    						Integer businessId = tagmap.getBusinessId();
-	    						Tag tag_ = tagService.getTag(tag.getTagGroupId(), tag.getTagName(), dispatchUserNameTo, tag.getTagObjectId());
+	    						Tag tag_ = tagService.getTag(tag.getTagGroupId(), tag.getTagName(), dispatchUserNameTo);
 		    					//更新标签使用数量
 		    					tag_.setTabUseNum(tag_.getTabUseNum()+1);
 		    					/*更新*/
@@ -311,7 +310,7 @@ public class TagController extends BaseController {
 		    					tagmap.setTagmapUpdateTime(new Date());
 		    					/*保存*/
 		    					
-		    					tagService.logic(tag_, tagmap, tag.getTagId(), businessId);
+		    					tagService.logic(tag_, tagmap, tag.getTagId(), businessId, tag.getTagGroupId(), tagObjectId);
 	    					}
 	    					//调配完成之后删除
 		    				tagService.delTag(tag.getTagId());
@@ -393,11 +392,13 @@ public class TagController extends BaseController {
 	    		return "{\"errcode\":10000,\"errmsg\":\"必要参数为空\"}";
 	    	}
 	    	
-	    	List<Tag> tags = tagService.findTag(tagGroupId, tagName, tagCreateObject, tagObjectId);
+	    	List<Tag> tags = tagService.findTag(tagGroupId, tagName, tagCreateObject);
 	    	String result = "";
 	    	for(Tag tag : tags){
 	    		Map<String, Integer> map = new HashMap<String, Integer>();
 	    		map.put("tag_id", tag.getTagId());
+	    		map.put("tag_group_id", tagGroupId);
+	    		map.put("tag_object_id", tagObjectId);
 	    		List<Tagmap> tagmaps = tagmapService.findTagMapByMap(map);
 	    		for(Tagmap tagmap : tagmaps){
 	    			result += tagmap.getBusinessId()+",";
@@ -480,10 +481,10 @@ public class TagController extends BaseController {
 	    		return "{\"errcode\":10000,\"errmsg\":\"必要参数为空\"}";
 	    	}
 	    	
-	    	Tag tag = tagService.getTag(tagGroupId, tagName, tagCreateObject, tagObjectId);
+	    	Tag tag = tagService.getTag(tagGroupId, tagName, tagCreateObject);
 	    	if(tag != null){
 	    		tag.setTabUseNum(tag.getTabUseNum() - 1);
-	    		tagmapService.delTagmap(businessId, tag);
+	    		tagmapService.delTagmap(businessId, tag, tagObjectId);
 	    	}
 	    	logger.debug("移除标签成功");
     		return "{\"errcode\":0000,\"errmsg\":\"移除标签成功\"}";

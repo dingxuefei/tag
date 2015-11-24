@@ -36,13 +36,13 @@ public class TagServiceImpl implements TagService {
 	}
 
 	@Override
-	public Tag getTag(Integer tagGroupId, String tagName, String tagCreateObject, Integer tagObjectId) {
-		return tagDao.getTag(tagGroupId, tagName, tagCreateObject, tagObjectId);
+	public Tag getTag(Integer tagGroupId, String tagName, String tagCreateObject) {
+		return tagDao.getTag(tagGroupId, tagName, tagCreateObject);
 	}
 
 	@Override
-	public List<Tag> findTag(Integer tagGroupId, String tagCreateObject, Integer tagObjectId) {
-		return tagDao.findTag(tagGroupId, tagCreateObject, tagObjectId);
+	public List<Tag> findTag(Integer tagGroupId, String tagCreateObject) {
+		return tagDao.findTag(tagGroupId, tagCreateObject);
 	}
 
 	
@@ -53,17 +53,17 @@ public class TagServiceImpl implements TagService {
 	}
 
 	@Override
-	public List<Tag> findTag(Integer tagGroupId, String tagName, String tagCreateObject, Integer tagObjectId) {
-		return tagDao.findTag(tagGroupId, tagName, tagCreateObject, tagObjectId);
+	public List<Tag> findTag(Integer tagGroupId, String tagName, String tagCreateObject) {
+		return tagDao.findTag(tagGroupId, tagName, tagCreateObject);
 	}
 
 	
 	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class,value="txManager")
 	@Override
-	public void logic(Tag tag, Tagmap tagmap, Integer tagId, Integer businessId) {
+	public void logic(Tag tag, Tagmap tagmap, Integer tagId, Integer businessId, Integer tagGroupId, Integer tagObjectId) {
 		tagDao.updateTag(tag);
 		tagmapDao.insertTagmap(tagmap);
-		tagmapDao.delTagmap(tagId, businessId);
+		tagmapDao.delTagmap(tagId, businessId, tagObjectId, tagGroupId);
 	}
 
 

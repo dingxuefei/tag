@@ -54,11 +54,11 @@ public interface TagmapService {
 	
 	/**
 	 * 移除标签
-	 * @param tagId
 	 * @param businessId
 	 * @param tag
+	 * @param tagObjectId
 	 */
-	public void delTagmap(Integer businessId, Tag tag);
+	public void delTagmap(Integer businessId, Tag tag, Integer tagObjectId);
 	
 	
 }

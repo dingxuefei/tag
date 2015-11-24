@@ -19,7 +19,7 @@ import com.hummingbird.tag.model.Tag;
 @Repository("TagDao")
 public class TagDaoImpl implements TagDao {
 	
-	private static String tag_sql = "tag_id, tag_object_id, tag_group_id, tag_name, tab_use_num, tag_create_time, tag_status, tag_create_object, tag_update_time, tag_update_remark";
+	private static String tag_sql = "tag_id, tag_group_id, tag_name, tab_use_num, tag_create_time, tag_status, tag_create_object, tag_update_time, tag_update_remark";
 	
 	@Autowired
     private JdbcTemplate jdbcTemplate;
@@ -30,7 +30,7 @@ public class TagDaoImpl implements TagDao {
             NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
             SqlParameterSource paramSource = new BeanPropertySqlParameterSource(tag);
             String sql = "insert into t_tag("+tag_sql+") " +
-            		"values (:tagId, :tagObjectId, :tagGroupId, :tagName, :tabUseNum, :tagCreateTime, :tagStatus, :tagCreateObject, :tagUpdateTime, :tagUpdateRemark)";
+            		"values (:tagId, :tagGroupId, :tagName, :tabUseNum, :tagCreateTime, :tagStatus, :tagCreateObject, :tagUpdateTime, :tagUpdateRemark)";
 
             KeyHolder keyHolder = new GeneratedKeyHolder();
             namedParameterJdbcTemplate.update(sql, paramSource, keyHolder);
@@ -45,16 +45,16 @@ public class TagDaoImpl implements TagDao {
 	
 	@Override
 	public int updateTag(Tag tag) {
-		String sql = "update t_tag set tag_object_id=?, tag_group_id=?, tag_name=?, tab_use_num=?, tag_status=?, tag_update_time=?, tag_create_object=?, tag_update_remark=? where tag_id=?";
+		String sql = "update t_tag set tag_group_id=?, tag_name=?, tab_use_num=?, tag_status=?, tag_update_time=?, tag_create_object=?, tag_update_remark=? where tag_id=?";
         int count = jdbcTemplate.update(
-                sql, tag.getTagObjectId(), tag.getTagGroupId(), tag.getTagName(), tag.getTabUseNum(), tag.getTagStatus(), new Date(), tag.getTagCreateObject(), tag.getTagUpdateRemark(), tag.getTagId());
+                sql, tag.getTagGroupId(), tag.getTagName(), tag.getTabUseNum(), tag.getTagStatus(), new Date(), tag.getTagCreateObject(), tag.getTagUpdateRemark(), tag.getTagId());
         return count;
 	}
 
 	@Override
-	public Tag getTag(Integer tagGroupId, String tagName, String tagCreateObject, Integer tagObjectId) {
-		String sql = "select "+tag_sql+" from t_tag where 1=1 and tag_group_id=? and tag_name=? and tag_create_object=? and tag_object_id=?";
-		List<Tag> tags = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Tag.class), tagGroupId, tagName, tagCreateObject, tagObjectId);
+	public Tag getTag(Integer tagGroupId, String tagName, String tagCreateObject) {
+		String sql = "select "+tag_sql+" from t_tag where tag_group_id=? and tag_name=? and tag_create_object=?";
+		List<Tag> tags = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Tag.class), tagGroupId, tagName, tagCreateObject);
 		if(tags.size() > 0){
 			return tags.get(0);
 		}else{
@@ -63,9 +63,9 @@ public class TagDaoImpl implements TagDao {
 	}
 
 	@Override
-	public List<Tag> findTag(Integer tagGroupId, String tagCreateObject, Integer tagObjectId) {
-		String sql = "select "+tag_sql+" from t_tag where 1=1 and tag_group_id=? and tag_create_object=? and tag_object_id=?";
-		List<Tag> tags = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Tag.class), tagGroupId, tagCreateObject, tagObjectId);
+	public List<Tag> findTag(Integer tagGroupId, String tagCreateObject) {
+		String sql = "select "+tag_sql+" from t_tag where tag_group_id=? and tag_create_object=?";
+		List<Tag> tags = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Tag.class), tagGroupId, tagCreateObject);
 		return tags;
 	}
 
@@ -77,16 +77,16 @@ public class TagDaoImpl implements TagDao {
 	}
 
 	@Override
-	public List<Tag> findTag(Integer tagGroupId, String tagName, String tagCreateObject, Integer tagObjectId) {
-		String sql = "select "+tag_sql+" from t_tag where 1=1 and tag_group_id=? and tag_name like '%"+tagName+"%' and tag_create_object=? and tag_object_id=?";
-		List<Tag> tags = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Tag.class), tagGroupId, tagCreateObject, tagObjectId);
+	public List<Tag> findTag(Integer tagGroupId, String tagName, String tagCreateObject) {
+		String sql = "select "+tag_sql+" from t_tag where tag_group_id=? and tag_name like '%"+tagName+"%' and tag_create_object=?";
+		List<Tag> tags = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Tag.class), tagGroupId, tagCreateObject);
 		return tags;
 	}
 
 
 	@Override
 	public Tag getTag(Integer tagId) {
-		String sql = "select "+tag_sql+" from t_tag where 1=1 and tag_id=?";
+		String sql = "select "+tag_sql+" from t_tag where tag_id=?";
 		List<Tag> tags = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(Tag.class), tagId);
 		if(tags.size() > 0){
 			return tags.get(0);

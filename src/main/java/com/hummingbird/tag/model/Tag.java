@@ -5,8 +5,6 @@ import java.util.Date;
 public class Tag {
     private Integer tagId;
 
-    private Integer tagObjectId;
-
     private Integer tagGroupId;
 
     private String tagName;
@@ -33,13 +31,12 @@ public class Tag {
 		super();
 	}
     
-	public Tag(Integer tagId, Integer tagObjectId, Integer tagGroupId,
+	public Tag(Integer tagId, Integer tagGroupId,
 			String tagName, Integer tabUseNum, Date tagCreateTime,
 			Integer tagStatus, String tagCreateObject, Date tagUpdateTime,
 			String tagUpdateRemark) {
 		super();
 		this.tagId = tagId;
-		this.tagObjectId = tagObjectId;
 		this.tagGroupId = tagGroupId;
 		this.tagName = tagName;
 		this.tabUseNum = tabUseNum;
@@ -58,14 +55,6 @@ public class Tag {
 
     public void setTagId(Integer tagId) {
         this.tagId = tagId;
-    }
-
-    public Integer getTagObjectId() {
-        return tagObjectId;
-    }
-
-    public void setTagObjectId(Integer tagObjectId) {
-        this.tagObjectId = tagObjectId;
     }
 
     public Integer getTagGroupId() {
@@ -158,7 +147,7 @@ public class Tag {
 
 	@Override
 	public String toString() {
-		return "Tag [tagId=" + tagId + ", tagObjectId=" + tagObjectId
+		return "Tag [tagId=" + tagId
 				+ ", tagGroupId=" + tagGroupId + ", tagName=" + tagName
 				+ ", tabUseNum=" + tabUseNum + ", tagCreateTime="
 				+ tagCreateTime + ", tagStatus=" + tagStatus

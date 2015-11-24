@@ -22,7 +22,6 @@ DROP TABLE IF EXISTS `t_tag`;
 
 CREATE TABLE `t_tag` (
   `tag_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '标签主键',
-  `tag_object_id` int(11) NOT NULL COMMENT 'ID主键',
   `tag_group_id` int(11) NOT NULL COMMENT '标签组主键',
   `tag_name` varchar(20) NOT NULL COMMENT '标签名称',
   `tab_use_num` int(11) NOT NULL COMMENT '该标签使用次数统计',
@@ -32,7 +31,6 @@ CREATE TABLE `t_tag` (
   `tag_update_time` datetime DEFAULT NULL COMMENT '标签更新时间',
   `tag_update_remark` text COMMENT '标签更新备注',
   PRIMARY KEY (`tag_id`),
-  KEY `tag_object_id` (`tag_object_id`),
   KEY `tag_group_id` (`tag_group_id`),
   KEY `tag_name` (`tag_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

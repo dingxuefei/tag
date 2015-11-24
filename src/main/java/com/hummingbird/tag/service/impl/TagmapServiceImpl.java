@@ -49,8 +49,8 @@ public class TagmapServiceImpl implements TagmapService {
 
 	@Transactional(propagation=Propagation.REQUIRED,rollbackFor=Exception.class,value="txManager")
 	@Override
-	public void delTagmap(Integer businessId, Tag tag) {
-		tagmapDao.delTagmap(tag.getTagId(), businessId);
+	public void delTagmap(Integer businessId, Tag tag, Integer tagObjectId) {
+		tagmapDao.delTagmap(tag.getTagId(), businessId, tagObjectId, tag.getTagGroupId());
 		tagDao.updateTag(tag);
 	}
 

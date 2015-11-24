@@ -46,8 +46,10 @@ public interface TagmapDao {
 	 * 删除关联
 	 * @param tagId
 	 * @param businessId
+	 * @param tagObjectId
+	 * @param tagGroupId
 	 * @return
 	 */
-	public int delTagmap(Integer tagId, Integer businessId);
+	public int delTagmap(Integer tagId, Integer businessId, Integer tagObjectId, Integer tagGroupId);
 	
 }
